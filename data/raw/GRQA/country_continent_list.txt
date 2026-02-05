@@ -1,0 +1,83 @@
+site_country	site_country_name	continent
+Canada	Canada	NorthAmerica
+Argentina	Argentina	SouthAmerica
+Australia	Australia	Oceania
+Austria	Austria	Europe
+Belgium	Belgium	Europe
+Bolivia (Plurinational State of)	Bolivia	SouthAmerica
+Brazil	Brazil	SouthAmerica
+Switzerland	Switzerland	Europe
+China	China	Asia
+Colombia	Colombia	SouthAmerica
+Denmark	Denmark	Europe
+Ecuador	Ecuador	SouthAmerica
+Estonia	Estonia	Europe
+Finland	Finland	Europe
+Fiji	Fiji	Oceania
+France	France	Europe
+United Kingdom of Great Britain and Northern Ireland (the)	UK	Europe
+Guatemala	Guatemala	NorthAmerica
+Croatia	Croatia	Europe
+Hungary	Hungary	Europe
+Indonesia	Indonesia	Asia
+India	India	Asia
+Ireland	Ireland	Europe
+Iceland	Iceland	Europe
+Italy	Italy	Europe
+Japan	Japan	Asia
+Kenya	Kenya	Africa
+Korea (the Republic of)	South Korea	Asia
+Sri Lanka	Sri Lanka	Asia
+Luxembourg	Luxembourg	Europe
+Morocco	Morocco	Africa
+Mexico	Mexico	NorthAmerica
+Macedonia (the former Yugoslav Republic of)	Macedonia	Europe
+Mali	Mali	Africa
+Malaysia	Malaysia	Asia
+Netherlands (the)	Netherlands	Europe
+Norway	Norway	Europe
+Panama	Panama	NorthAmerica
+Peru	Peru	SouthAmerica
+Poland	Poland	Europe
+Portugal	Portugal	Europe
+Russian Federation (the)	Russia	Asia
+Sudan (the)	Sudan	Africa
+Serbia	Serbia	Europe
+Slovenia	Slovenia	Europe
+Thailand	Thailand	Asia
+Turkey	Turkey	Asia
+Uruguay	Uruguay	SouthAmerica
+United States of America (the)	US	NorthAmerica
+Nigeria	Nigeria	Africa
+Egypt	Egypt	Africa
+Cameroon	Cameroon	Africa
+Sudan	Sudan	Africa
+Rep. Congo	Congo	Africa
+Russia	Russia	Asia
+SWEDEN	Sweden	Europe
+Germany	Germany	Europe
+Spain	Spain	Europe
+Nepal	Nepal	Asia
+Bangladesh	Bangladesh	Asia
+South Corea	South Korea	Asia
+Philippines	Philippines	Asia
+USA	US	NorthAmerica
+Columbia	Colombia	SouthAmerica
+Bolivia	Bolivia	SouthAmerica
+Suriname_France	Suriname	SouthAmerica
+France_Brazil	France_SA	SouthAmerica
+Venezuela	Venezuela	SouthAmerica
+Lesser Antilles	Lesser Antilles	SouthAmerica
+AT	Austria	Europe
+CH	Switzerland	Europe
+HR	Croatia	Europe
+IT	Italy	Europe
+LT	Lithuania	Europe
+LV	Latvia	Europe
+MK	Macedonia	Europe
+MT	Malta	Europe
+NL	Netherlands	Europe
+PL	Poland	Europe
+UK	UK	Europe
+XK	Kosovo	Europe
+United States	US	NorthAmerica
