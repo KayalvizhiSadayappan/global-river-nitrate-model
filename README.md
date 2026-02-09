@@ -33,7 +33,9 @@ The scripts run in R (version 4.3.2) and requires the following packages:
 
 <!-- Data -->
 Nitrate concentration data: Global River Quality Archive (GRQA) (1)
+
 Global river network: Multi-Error-Removed Improved Terrain Hydrography (MERIT Hydro) (2)
+
 Catchment characteristics:
   - Terra and Aqua combined Moderate Resolution Imaging Spectroradiometer (MODIS) Land Cover Type  MODIS Land Cover Type Product (MCD12Q1, version 6.1) (3)
   - Climatologies at High Resolution for the Earth’s Land Surface Areas (CHELSA version 2.1) (4)
