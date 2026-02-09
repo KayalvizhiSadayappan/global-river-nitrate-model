@@ -22,7 +22,7 @@
 #            best_MERIT_COMID.txt  (contains COMID of river segment best represented by each site)
 #
 # Dependencies:
-#   - R packages: dplyr, parallel, lubridate, sf
+#   - R packages: dplyr, parallel, dplyr, sf
 #
 # Runtime: The code ran on 20 CPU each with 32 GB of memory and completed in approximately 36 minutes.
 # ---------------------------------------------------------------
