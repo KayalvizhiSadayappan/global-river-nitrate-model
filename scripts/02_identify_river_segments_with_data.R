@@ -3,28 +3,28 @@
 # Purpose: For each site with at least 10 measurements, the stream network it best represents
 #           are chosen. The criteria is 1) the selected river segment's upstream area 
 #           should be within 20% of site's area in GRQA database 2) minimum distance
-#           between site and selected river segment should be within 5
+#           between site and selected river segment should be within 5 km radius
 # Author: Kayalvizhi Sadayappan
-# Date: 2026-01-26
-# Version: 1.0.0
+# Date: 2026-08-07
+# Version: 1.0.1
 #
 # Inputs:
 #   - Folder: data/raw/MERIT_Hydro/MERIT_Hydro_v07_Basins_v01/MERIT_Hydro_v07_Basins_v01/pfaf_level_01/
 #   - Files: 8 files including "riv_pfaf_1_MERIT_Hydro_v07_Basins_v01.shp", riv_pfaf_2_MERIT_Hydro_v07_Basins_v01.shp", etc
 #   - Download: MERIT_Hydro_v07_Basins_v01.zip from https://drive.google.com/drive/folders/1uCQFmdxFbjwoT9OYJxw-pXaP8q_GYH1a?usp=share_link
 #   - Processed data from previous script:
-#       Folder: data/processed/river_nit_conc/
+#       Folder: data/processed/
 #       Files: NO3N_sites_GRQA.txt
 #
 # Outputs:
-#   - Folder: data/processed/river_segments_with_data
+#   - Folder: data/processed/
 #   - Files: nearest_MERIT_COMIDs.txt (contains nearest 15 river segments within 5 km radius from each site)
 #            best_MERIT_COMID.txt  (contains COMID of river segment best represented by each site)
 #
 # Dependencies:
-#   - R packages: dplyr, parallel, dplyr, sf
+#   - R packages: readr, parallel, dplyr, sf
 #
-# Runtime: The code ran on 20 CPU each with 32 GB of memory and completed in approximately 36 minutes.
+# Runtime: The code ran on 20 CPU cores each with 32 GB of memory and completed in approximately 46 minutes.
 # ---------------------------------------------------------------
 
 #load libraries
@@ -34,7 +34,7 @@ library(sf)
 library(parallel)
 
 #functions
-assign_MERIT=function(sites_GRQA){
+assign_MERIT<- function(sites_GRQA){
   sites_GRQA$MERIT=NA
   sites_GRQA$MERIT[sites_GRQA$continent=="Africa"]=1
   sites_GRQA$MERIT[sites_GRQA$continent=="Europe"]=2
@@ -63,7 +63,7 @@ assign_MERIT=function(sites_GRQA){
   sites_GRQA$MERIT[ind_78]=78
   return(sites_GRQA)
 }
-get_nearest_river_segments=function(merit_river,site_sf){
+get_nearest_river_segments <- function(merit_river,site_sf){
   nearest_stream_seg=data.frame(matrix(NA,nrow=1,ncol=16))
   colnames(nearest_stream_seg)[1]="site_id"
   nearest_stream_seg$site_id=site_sf$site_id
@@ -78,7 +78,7 @@ get_nearest_river_segments=function(merit_river,site_sf){
   }
   return(nearest_stream_seg)
 }
-select_bestfit_river_segment=function(merit_river,site_sf,nearest_stream_seg){
+select_bestfit_river_segment <- function(merit_river,site_sf,nearest_stream_seg){
   summary_river_segment=data.frame(site_id=site_sf$site_id,area_GRQA=site_sf$area_km2,
                                    sel_COMID=NA,dist=NA,area=NA,area_dif=NA)
   sel_seg_COMID=nearest_stream_seg[1,2:16];
@@ -107,21 +107,21 @@ select_bestfit_river_segment=function(merit_river,site_sf,nearest_stream_seg){
 
 #select root folder and cores for parallel computing (user specific)
 root_folder <- "/global-river-nitrate-model/"
-ncores=20
+ncores <- 20
 
 #set working directory
 setwd(root_folder)
 
-start_time=Sys.time()
+start_time <-Sys.time()
 
 #folder with MERIT-Hydro data
-merit_net_folder="data/raw/MERIT_Hydro/MERIT-Hydro_v0.7_v1.0/MERIT_Hydro_v07_Basins_v01/pfaf_level_01/"
+merit_net_folder <- "data/raw/MERIT_Hydro/MERIT-Hydro_v0.7_v1.0/MERIT_Hydro_v07_Basins_v01/pfaf_level_01/"
 
 #select sites with area information and minimum 10 observations
-sites_GRQA <- read_delim("data/processed/river_nit_conc/NO3N_sites_GRQA.txt", 
+sites_GRQA <- read_delim("data/processed/NO3N_sites_GRQA.txt", 
                               delim = "\t", escape_double = FALSE,trim_ws = TRUE)
-sites_GRQA=sites_GRQA[sites_GRQA$count_obs>=10,]
-sites_GRQA=sites_GRQA[!is.na(sites_GRQA$area_km2),]
+sites_GRQA <-sites_GRQA[sites_GRQA$count_obs>=10,]
+sites_GRQA <-sites_GRQA[!is.na(sites_GRQA$area_km2),]
 
 #global river snetwork is divided into 8 files in MERIT hydro dataset
 #this function assigns each site to the MERIT file where it lies. 
@@ -130,19 +130,19 @@ sites_4326 <- st_as_sf(sites_GRQA, coords = c("lon_wgs84", "lat_wgs84"), crs = 4
 sites_sf <- st_transform(sites_4326, crs = "ESRI:54009")
 
 #identify COMID MERIT river segments within 5 km radius from site
-nearest_stream_seg_merit=vector(mode="list",length=9)
-current_time=Sys.time()
+nearest_stream_seg_merit <-vector(mode="list",length=9)
+current_time <-Sys.time()
 merit_id=c(1,2,3,4,5,6,7,8,78)
 for(i in c(1,2,3,4,5,6,7,8,9)){
-  current_time=Sys.time()
-  sites_sf_subset=sites_sf[which(sites_sf$MERIT==merit_id[i]),]
+  current_time <-Sys.time()
+  sites_sf_subset <-sites_sf[which(sites_sf$MERIT==merit_id[i]),]
   sites_list <- split(sites_sf_subset, seq_len(nrow(sites_sf_subset)))
   if (i != 9){
     merit_river=st_read(paste(merit_net_folder,"riv_pfaf_",i,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
   } else if (i == 9){
-    MERIT_7=st_read(paste(merit_net_folder,"riv_pfaf_",7,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
-    MERIT_8=st_read(paste(merit_net_folder,"riv_pfaf_",8,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
-    merit_river=rbind(MERIT_7, MERIT_8)
+    MERIT_7 <-st_read(paste(merit_net_folder,"riv_pfaf_",7,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
+    MERIT_8 <-st_read(paste(merit_net_folder,"riv_pfaf_",8,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
+    merit_river <-rbind(MERIT_7, MERIT_8)
     rm(MERIT_7,MERIT_8)
   } else{cat("Check MERIT number!\n")}
   rivers_proj <- st_transform(merit_river, crs = "ESRI:54009")
@@ -155,14 +155,14 @@ for(i in c(1,2,3,4,5,6,7,8,9)){
   print(Sys.time()-current_time)
   
 }
-nearest_stream_seg_merit_cons=do.call(rbind,nearest_stream_seg_merit)
-nearest_stream_seg_merit_cons=nearest_stream_seg_merit_cons[match(sites_sf$site_id, nearest_stream_seg_merit_cons$site_id), ]
+nearest_stream_seg_merit_cons <-do.call(rbind,nearest_stream_seg_merit)
+nearest_stream_seg_merit_cons <-nearest_stream_seg_merit_cons[match(sites_sf$site_id, nearest_stream_seg_merit_cons$site_id), ]
 
-write.table(nearest_stream_seg_merit_cons,"data/processed/river_segments_with_data/nearest_MERIT_COMIDs.txt",
+write.table(nearest_stream_seg_merit_cons,"data/processed/nearest_MERIT_COMIDs.txt",
             sep="\t",row.names = FALSE)
 
 #select the stream segment best representing each site based on drainage area and distance
-best_stream_seg_merit=vector(mode="list",length=9)
+best_stream_seg_merit <-vector(mode="list",length=9)
 for(i in c(1,2,3,4,5,6,7,8,9)){
   sites_sf_subset=sites_sf[which(sites_sf$MERIT==merit_id[i]),]
   nearest_subset=nearest_stream_seg_merit_cons[which(sites_sf$MERIT==merit_id[i]),]
@@ -170,11 +170,11 @@ for(i in c(1,2,3,4,5,6,7,8,9)){
     sites_list <- split(sites_sf_subset, seq_len(nrow(sites_sf_subset)))
     nearest_list <- split(nearest_subset, seq_len(nrow(nearest_subset)))
     if (i != 9){
-      merit_river=st_read(paste(merit_net_folder,"riv_pfaf_",i,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
+      merit_river <- st_read(paste(merit_net_folder,"riv_pfaf_",i,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
     } else if (i == 9){
-      MERIT_7=st_read(paste(merit_net_folder,"riv_pfaf_",7,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
-      MERIT_8=st_read(paste(merit_net_folder,"riv_pfaf_",8,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
-      merit_river=rbind(MERIT_7, MERIT_8)
+      MERIT_7 <- st_read(paste(merit_net_folder,"riv_pfaf_",7,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
+      MERIT_8 <- st_read(paste(merit_net_folder,"riv_pfaf_",8,"_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
+      merit_river <- rbind(MERIT_7, MERIT_8)
       rm(MERIT_7,MERIT_8)
     } else{cat("Check MERIT number!\n")}
     rivers_proj <- st_transform(merit_river, crs = "ESRI:54009")
@@ -186,15 +186,15 @@ for(i in c(1,2,3,4,5,6,7,8,9)){
     best_stream_seg_merit[[i]] <- do.call(rbind, best_stream_seg_list)
   }
 }
-best_stream_seg_merit_cons=do.call(rbind,best_stream_seg_merit)
-best_stream_seg_merit_cons=best_stream_seg_merit_cons[match(sites_sf$site_id, best_stream_seg_merit_cons$site_id), ]
-best_stream_seg_merit_cons=best_stream_seg_merit_cons[!is.na(best_stream_seg_merit_cons$sel_COMID),]
+best_stream_seg_merit_cons <-do.call(rbind,best_stream_seg_merit)
+best_stream_seg_merit_cons <-best_stream_seg_merit_cons[match(sites_sf$site_id, best_stream_seg_merit_cons$site_id), ]
+best_stream_seg_merit_cons <-best_stream_seg_merit_cons[!is.na(best_stream_seg_merit_cons$sel_COMID),]
 
-best_stream_seg_merit_cons$MERIT=as.numeric(best_stream_seg_merit_cons$sel_COMID) %/% 1E7
-write.table(best_stream_seg_merit_cons,"data/processed/river_segments_with_data/best_MERIT_COMID.txt",
+best_stream_seg_merit_cons$MERIT <- as.numeric(best_stream_seg_merit_cons$sel_COMID) %/% 1E7
+write.table(best_stream_seg_merit_cons,"data/processed/best_MERIT_COMID.txt",
             sep="\t",row.names = FALSE)
 
-run_time=Sys.time()-start_time
+run_time <- Sys.time()-start_time
 sprintf("Code ran in %02d:%02d:%02d", 
         floor(as.numeric(run_time, "secs")/3600),
         floor((as.numeric(run_time, "secs")%%3600)/60),
