@@ -13,7 +13,7 @@
   - `raw/` - Input data (from original databases or repositories)
   - `processed/` - Processed data created by scripts for model training and prediction
 - `models` - Models are saved here
-- `results` - Predicted river nitrate concentrations
+- `results` - Predicted river nitrate concentrations, model ensemble performance, importance of attributes across models, their SHAP and interaction are saved here 
 - `scripts` - Scripts that clean raw data, trains model on it and predict nitrate concentrations
   - `01_nitrate_data_cleaning` - cleans raw data and calculate mean river nitrate concentrations in GRQA sites
   - `02_identify_river_segments_with_data` - identifies the river segments on which the GRQA sites are located
