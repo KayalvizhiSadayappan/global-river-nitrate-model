@@ -1,7 +1,7 @@
 
 # Global River Nitrate Model
 <!-- Project Title -->
-<p align="justify"> A global scale approach for estimating long term mean nitrate concentrations across the global river network using land use, climate, soil and other catchment attributes </p> 
+<p align="justify"> A global scale approach for estimating long term mean nitrate concentrations across the global river network (2895895 MERIT Hydro segments) using land use, climate, soil and other catchment attributes </p> 
 
 <h1>Overview</h1>
 
@@ -10,7 +10,7 @@
 <h1>Repository Structure</h1>
 
 - `data/` - Input datasets
-  - `raw/` - Unprocessed input data (from original databases or repositories)
+  - `raw/` - Input data (from original databases or repositories)
   - `processed/` - Processed data created by scripts for model training and prediction
 - `models` - Models are saved here
 - `results` - Predicted river nitrate concentrations
@@ -18,11 +18,12 @@
   - `01_nitrate_data_cleaning` - cleans raw data and calculate mean river nitrate concentrations in GRQA sites
   - `02_identify_river_segments_with_data` - identifies the river segments on which the GRQA sites are located
   - `03_train_BRT_model` - trains 1000 machine learning models to predict mean nitrate concentrations
-  - `04_predict_global_nitrate` - predicts nitrate concentration in 2895896 segments in the global river network
+  - `04_get_SHAP` - derives SHAP values and interaction between attributes for a selected machine learning model
+  - `05_predict_global_nitrate` - predicts nitrate concentration in 2895895 segments in the global river network
 
 <h1>Requirements</h1>
 
-The scripts run in R (version 4.3.2) and requires the following packages:
+The scripts were run in R (version 4.3.2) and required the following packages:
 - readr (2.1.5)
 - dplyr (1.1.4)
 - lubridate (1.9.4)
@@ -31,6 +32,8 @@ The scripts run in R (version 4.3.2) and requires the following packages:
 - caret (6.0.94)
 - xgboost (1.7.7.1)
 - hydroGOF (0.6.0)
+- SHAPforxgboost (0.1.3)
+- matrixStats (1.5.0)
 
 <h1>Data</h1>
 
@@ -47,7 +50,7 @@ The scripts run in R (version 4.3.2) and requires the following packages:
 
 <h1>Notes</h1>
 
-<p align="justify"> The data for training the models are provided in the file "BRT_train_data_7213_catchments.txt" in the folder "data/processed". The "BRT_input_global_subset.txt" file in the same folder contains catchment characteristics for 5000 river segments as an example dataset to demonstrate prediction of river nitrate concentration in these segments. </p>
+<p align="justify"> The data for training the models are provided in the file "BRT_train_data_7213_catchments.txt" in the folder "data/processed". The "BRT_input_data_global.txt" file contains catchment characteristics for 2895895 river segments and can be found here: https://doi.org/10.5281/zenodo.18567298. </p>
 
 <h1>Citation</h1>
 <p align="justify"><sup>1</sup>H. Virro, G. Amatulli, A. Kmoch, L. Shen, E. Uuemaa, GRQA: global river water quality archive. Earth System Science Data Discussions 2021, 1-30 (2021)</p>
