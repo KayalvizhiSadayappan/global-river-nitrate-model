@@ -2,8 +2,8 @@
 # Script: 01_nitrate_data_cleaning.R
 # Purpose: Clean GRQA water quality data and calculate long term mean nitrate per site
 # Author: Kayalvizhi Sadayappan
-# Date: 2026-01-26
-# Version: 1.0
+# Date: 2026-08-07
+# Version: 1.0.1
 #
 # Inputs:
 #   - Folder: data/raw/GRQA/
@@ -11,16 +11,16 @@
 #           GRQA_data_v1.3/NO3N_GRQA.csv
 #           country_continent_list.txt, site_id_country_correction.txt
 #   - Source: Download GRQA_data_v1.3.zip and GRQA_meta.zip from https://zenodo.org/records/7056647
-#             country_continent_list.txt and site_id_country_correction,txt are in the repository
+#             country_continent_list.txt and site_id_country_correction.txt are in the repository
 #
 # Outputs:
-#   - Folder: data/processed/river_nit_conc/
+#   - Folder: data/processed/
 #   - Files: NO3N_GRQA_daily_cleaned.txt (contains daily observations for all sites after cleaning)
 #            NO3N_sites_GRQA.txt  (contains mean nitrate concentrations for all sites)
 #
 # Dependencies:
 #   - R packages: dplyr, readr, lubridate
-# Runtime: The code ran on 1 CPU with 32 GB of memory and completed in approximately 6 minutes.
+# Runtime: The code ran on 1 CPU with 32 GB of memory and completed in approximately 7.5 minutes.
 # ---------------------------------------------------------------
 
 #load libraries
@@ -181,9 +181,9 @@ sites_GRQA <- NO3N_GRQA_daily %>%
             median_obs_value = median(obs_value),sd_obs_value = sd(obs_value)) %>%
   ungroup()   
 
-write.table(NO3N_GRQA_daily,"data/processed/river_nit_conc/NO3N_GRQA_daily_cleaned.txt",
+write.table(NO3N_GRQA_daily,"data/processed/NO3N_GRQA_daily_cleaned.txt",
             sep="\t",row.names = FALSE)
-write.table(sites_GRQA,"data/processed/river_nit_conc/NO3N_sites_GRQA.txt",
+write.table(sites_GRQA,"data/processed/NO3N_sites_GRQA.txt",
             sep="\t",row.names = FALSE)
 
 run_time=Sys.time()-start_time
