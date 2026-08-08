@@ -18,8 +18,7 @@
 #
 # Dependencies:
 #   - R packages: readr, xgboost, caret, matrixStats
-# Runtime: The code ran on 4 CPU with 32 GB of memory each and completed in approximately 5 hours
-#         for sample subset. 
+# Runtime: The code ran on 4 CPU with 32 GB of memory each and completed in approximately 5 hours 10 minutes
 # ---------------------------------------------------------------
 library(caret)
 library(xgboost)
