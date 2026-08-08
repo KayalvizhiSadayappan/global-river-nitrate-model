@@ -2,11 +2,11 @@
 # Script: 03_train_BRT_model.R
 # Purpose: Train the model to predict nitrate concentrations
 # Author: Kayalvizhi Sadayappan
-# Date: 2026-01-26
-# Version: 1.0.0
+# Date: 2026-08-07
+# Version: 1.0.1
 #
 # Inputs:
-#   - Folder: data/processed/
+#   - Folder: data/raw/
 #   - Files: BRT_train_data_7213_catchments.txt
 #   - Source: The input data for training model is in the repository
 #
@@ -19,7 +19,7 @@
 #
 # Dependencies:
 #   - R packages: dplyr, readr, hydroGOF, xgboost, caret
-# Runtime: The code ran on 4 CPU each with 32 GB of memory and completed in approximately 43 minutes.
+# Runtime: The code ran on 4 CPU each with 32 GB of memory and completed in approximately 30 minutes.
 # ---------------------------------------------------------------
 library(xgboost)
 library(readr)
@@ -28,7 +28,7 @@ library(dplyr)
 library(caret)
 
 #select root folder and cores for parallel computing (user specific)
-root_folder <- "/global-river-nitrate-model/"
+root_folder <- "/global-river-nitrate-model"
 ncores <- 4
 
 #set working directory
@@ -45,7 +45,7 @@ if (!dir.exists("models")) {
 }
 
 #read in input data
-nit_df <- read_delim(file="data/processed/BRT_train_data_7213_catchments.txt",
+nit_df <- read_delim(file="data/raw/BRT_train_data_7213_catchments.txt",
                   delim = "\t", escape_double = FALSE,trim_ws = TRUE)
 
 #attributes to be used to train the model                  
@@ -144,6 +144,19 @@ mean_importance_df <- combined_imp_df %>%
     Frequency_sd = sd(Frequency, na.rm = TRUE)
   )
 
+model_nit_7213=nit_df[,c("site_id", "mean_nit")]
+model_nit_7213[paste0("model_", 1:1000)] <- NA_real_
+for(i in 1:1000){
+  dtrain=predict(caret_models[[i]],nit_df[,sel_att])
+  dtrain_nit <- xgb.DMatrix(data = data.matrix(dtrain))
+  set.seed(i+1000)
+  nit_pred=predict(model_ensemble[[i]],dtrain_nit)
+  model_nit_7213[paste0("model_",i)]=10^nit_pred
+  print(i)
+}
+
+model_nit_7213$pred_nit=rowMeans(model_nit_7213[,3:1002])
+
 #save preprocessing caret models and BRT model ensembles  
 save(model_ensemble,caret_models,
      file = "models/trained_models.RData")
@@ -152,6 +165,10 @@ save(model_ensemble,caret_models,
 write.table(model_perf_df,"results/BRT_model_performance.txt",
             sep="\t",row.names=FALSE)
 write.table(mean_importance_df,"results/BRT_mean_importance.txt",
+            sep="\t",row.names=FALSE)
+
+#save model ensemble predictions for 7213 sites
+write.table(model_nit_7213,"results/BRT_predictions_7213sites.txt",
             sep="\t",row.names=FALSE)
 
 run_time <- Sys.time()-start_time
