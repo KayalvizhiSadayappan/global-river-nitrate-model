@@ -16,7 +16,7 @@ library(ggplot2)# ‘3.5.1’
 library(patchwork)# ‘1.3.0’
 library(ggridges) #‘0.5.6’
 
-root_folder <- "/scratch/kps5778/global-river-nitrate-model-main/global-river-nitrate-model-main"
+root_folder <- "global-river-nitrate-model"
 setwd(root_folder)
 
 output_folder <- file.path("figures","fig2")
