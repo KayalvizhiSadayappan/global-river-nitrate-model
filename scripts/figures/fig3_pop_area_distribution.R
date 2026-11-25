@@ -27,7 +27,7 @@ if (!dir.exists(output_folder)) dir.create(output_folder, recursive = TRUE)
 
 world_map <- ne_countries(scale = "medium", returnclass = "sf")
 
-parent_folder = "data/MERIT-Hydro_v0.7_v1.0/MERIT_Hydro_v07_Basins_v01/pfaf_level_01/"
+parent_folder = "data/raw/MERIT-Hydro_v0.7_v1.0/MERIT_Hydro_v07_Basins_v01/pfaf_level_01/"
 # read in global subcatchment boundary data split over 8 MERIT files and combine them
 global_basin_lt<- list()
 for (sel_merit in seq(1,8,1)){
@@ -39,7 +39,7 @@ target_crs <- st_crs(merit_riv); rm(merit_riv)
 st_crs(global_basin)=target_crs;rm(global_basin_lt)
 
 #read in predicted nitrate concentration and classes 
-stream_nit_df <- read_delim(file="data/predicted_nitrate_concentrations_global.txt",
+stream_nit_df <- read_delim(file="results/predicted_nitrate_concentrations_global.txt",
                             delim = "\t", escape_double = FALSE,trim_ws = TRUE)
 global_river_segment_classes <- read_delim("data/raw/global_river_segment_classes.txt",
                                            delim = "\t", escape_double = FALSE, trim_ws = TRUE)

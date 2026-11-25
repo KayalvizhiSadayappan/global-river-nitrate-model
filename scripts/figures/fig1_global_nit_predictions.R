@@ -9,7 +9,7 @@
 # MERIT-Basins hydrography (based on MERIT-Hydro v0.7/v1.0))                   #
 # 2) Download GRQA_data_v1.3.zip from                                          # 
 # https://zenodo.org/records/7056647                                           #
-# 3) Downloaded BRT_train_data_7213_catchments.txt from                        # 
+# 3) Download BRT_train_data_7213_catchments.txt from                          # 
 # https://github.com/KayalvizhiSadayappan/global-river-nitrate-model/          # 
 # 4) Other input files are from                                                #
 #  https://zenodo.org/records/21853129                                         #
@@ -36,9 +36,11 @@ setwd(root_folder)
 output_folder <- file.path("figures","fig1")
 if (!dir.exists(output_folder)) dir.create(output_folder, recursive = TRUE)
 
+world_map <- ne_countries(scale = "medium", returnclass = "sf")
+
 # read in global river network data split over 8 MERIT files and combine them
 global_river_lt <- list()
-parent_folder = "data/MERIT-Hydro_v0.7_v1.0/MERIT_Hydro_v07_Basins_v01/pfaf_level_01/"
+parent_folder = "data/raw/MERIT-Hydro_v0.7_v1.0/MERIT_Hydro_v07_Basins_v01/pfaf_level_01/"
 for (sel_merit in seq(1,8,1)){
   MERIT_network <-  st_read(paste(parent_folder,"riv_pfaf_",sel_merit,
                               "_MERIT_Hydro_v07_Basins_v01.shp",sep=""))
@@ -57,9 +59,9 @@ global_basin=do.call(rbind,global_basin_lt)
 st_crs(global_basin)=target_crs;rm(global_basin_lt)
 
 #read in predicted nitrate concentrations, assign them to river segments by COMID
-stream_nit_df <- read_delim(file="data/predicted_nitrate_concentrations_global.txt",
+stream_nit_df <- read_delim(file="results/predicted_nitrate_concentrations_global.txt",
                          delim = "\t", escape_double = FALSE,trim_ws = TRUE)
-global_river_segment_classes <- read_delim("~/data/raw/global_river_segment_classes.txt",
+global_river_segment_classes <- read_delim("data/raw/global_river_segment_classes.txt",
                                            delim = "\t", escape_double = FALSE, trim_ws = TRUE)
 rivers_joined <- global_river %>%
   left_join(stream_nit_df[,c("COMID","mean_nit","cv_nit")], by = "COMID")

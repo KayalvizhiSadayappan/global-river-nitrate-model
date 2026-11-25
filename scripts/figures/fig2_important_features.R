@@ -135,23 +135,23 @@ si_ai_urban=ggplot(stream_nit_df[which(stream_nit_df$landuse=="3. urban"),],
   scale_y_log10(limits=c(0.005,12.5))
 
 #figure saved in png format as svg file for this can be very large
-ggsave("figures/fig2/fig2B_AI_mean_nit_scatter.svg",
+ggsave("figures/fig2/fig2B_AI_mean_nit_scatter.png",
        plot = si_ai+
          theme(legend.position = "none",axis.text = element_blank(),axis.title = element_blank(),
                           panel.background = element_rect(fill = "transparent", color = NA),
                           plot.background  = element_rect(fill = "transparent", color = NA)),
        dpi=1000,width=5.0,height=5.0, bg = "transparent")
-ggsave("figures/fig2/fig2B_AI_mean_nit_scatter_undev.svg",
+ggsave("figures/fig2/fig2B_AI_mean_nit_scatter_undev.png",
        plot = si_ai_undev+theme(legend.position = "none",axis.text = element_blank(),axis.title = element_blank(),
                                 panel.background = element_rect(fill = "transparent", color = NA),
                                 plot.background  = element_rect(fill = "transparent", color = NA)),
        dpi=1000,width=1.25,height=1.25, bg = "transparent")
-ggsave("figures/fig2/fig2B_AI_mean_nit_scatter_urban.svg",
+ggsave("figures/fig2/fig2B_AI_mean_nit_scatter_urban.png",
        plot = si_ai_urban+theme(legend.position = "none",axis.text = element_blank(),axis.title = element_blank(),
                                 panel.background = element_rect(fill = "transparent", color = NA),
                                 plot.background  = element_rect(fill = "transparent", color = NA)),
        dpi=1000,width=1.25,height=1.25, bg = "transparent")
-ggsave("figures/fig2/fig2B_AI_mean_nit_scatter_agri.svg",
+ggsave("figures/fig2/fig2B_AI_mean_nit_scatter_agri.png",
        plot = si_ai_agri+theme(legend.position = "none",axis.text = element_blank(),axis.title = element_blank(),
                                 panel.background = element_rect(fill = "transparent", color = NA),
                                 plot.background  = element_rect(fill = "transparent", color = NA)),
@@ -234,23 +234,23 @@ si_lu_agri=ggplot(stream_nit_df[which(stream_nit_df$landuse=="4. agri"),],
   scale_y_log10(limits=c(0.005,12.5))
 
 #figure saved in png format as svg file for this can be very large
-ggsave("figures/fig2/fig2E_landuse_mean_nit_scatter.svg",
+ggsave("figures/fig2/fig2E_landuse_mean_nit_scatter.png",
        plot = si_lu+
          theme(legend.position = "none",axis.text = element_blank(),axis.title = element_blank(),
                panel.background = element_rect(fill = "transparent", color = NA),
                plot.background  = element_rect(fill = "transparent", color = NA)),
        dpi=1000,width=5.0,height=5.0, bg = "transparent")
-ggsave("figures/fig2/fig2E_landuse_mean_nit_scatter_undev.svg",
+ggsave("figures/fig2/fig2E_landuse_mean_nit_scatter_undev.png",
        plot = si_lu_undev+theme(legend.position = "none",axis.text = element_blank(),axis.title = element_blank(),
                                 panel.background = element_rect(fill = "transparent", color = NA),
                                 plot.background  = element_rect(fill = "transparent", color = NA)),
        dpi=1000,width=1.25,height=1.25, bg = "transparent")
-ggsave("figures/fig2/fig2E_landuse_mean_nit_scatter_urban.svg",
+ggsave("figures/fig2/fig2E_landuse_mean_nit_scatter_urban.png",
        plot = si_lu_urban+theme(legend.position = "none",axis.text = element_blank(),axis.title = element_blank(),
                                 panel.background = element_rect(fill = "transparent", color = NA),
                                 plot.background  = element_rect(fill = "transparent", color = NA)),
        dpi=1000,width=1.25,height=1.25, bg = "transparent")
-ggsave("figures/fig2/fig2E_landuse_mean_nit_scatter_agri.svg",
+ggsave("figures/fig2/fig2E_landuse_mean_nit_scatter_agri.png",
        plot = si_lu_agri+theme(legend.position = "none",axis.text = element_blank(),axis.title = element_blank(),
                                panel.background = element_rect(fill = "transparent", color = NA),
                                plot.background  = element_rect(fill = "transparent", color = NA)),
